@@ -1,0 +1,160 @@
+{
+  "step1_read_source_data": {
+    "success": true,
+    "file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\data\\uploads\\CH3_ae.xlsx",
+    "records": 799,
+    "columns": [
+      "projectid",
+      "project",
+      "studyid",
+      "environmentName",
+      "subjectId",
+      "StudySiteId",
+      "siteid",
+      "SiteNumber",
+      "SiteGroup",
+      "instanceId",
+      "InstanceName",
+      "InstanceRepeatNumber",
+      "folderid",
+      "Folder",
+      "FolderName",
+      "FolderSeq",
+      "TargetDays",
+      "DataPageId",
+      "DataPageName",
+      "PageRepeatNumber",
+      "RecordDate",
+      "RecordId",
+      "RecordPosition",
+      "MinCreated",
+      "MaxUpdated",
+      "SaveTS",
+      "StudyEnvSiteNumber",
+      "AEYN",
+      "AEYN_STD",
+      "AETERM",
+      "AESTDAT",
+      "AETPT",
+      "AETPT_STD",
+      "AEENDAT",
+      "AECTCAE",
+      "AECTCAE_STD",
+      "AEDAT",
+      "AEREL",
+      "AEREL_STD",
+      "AEACN",
+      "AEACN_STD",
+      "AEOUT",
+      "AEOUT_STD",
+      "AESER",
+      "AESER_STD",
+      "SAEDAT",
+      "SAE01",
+      "SAE02",
+      "SAE03",
+      "SAE04",
+      "SAE05",
+      "SAE06",
+      "H_NOW",
+      "Site",
+      "Subject"
+    ],
+    "shape": [
+      799,
+      55
+    ]
+  },
+  "step2_retrieve_sdtm_rules": {
+    "success": true,
+    "query": "[AE] AE domain SDTMIG v3.3 required variables expected variables controlled terminology",
+    "chunks_count": 5,
+    "formatted": "[page 13 | score 0.786]  ( https://wiki.cdisc.org/x/s4Iv) area. Starting with SDTMIG v3.3: • A new domain has version 1.0. • An existing version that has changed since the last published version of the SDTMIG is up- versioned. • An existing version that has not changed since the last published version of the SDTMIG is not up- versioned. What constitutes a change for the purposes of deciding a domain version will be developed further, but for SDTMIG v3.3, a domain was assigned a version of v3.3 if there was a change to the specification and/or the assumptions from the domain as it appeared in SDTMIG v3.2. These general rules apply when determining which variables to include in a domain: • The Identifier variables, STUDYID, USUBJID, DOMAIN, and --SEQ are required in all domains based on the general observation classes. Other Identifiers may be added as needed. • Any Timing variables are permissible for use in any submission dataset based on a general observation class except where restricted by specific domain \n[page 15 | score 0.769] CDISC Study Data Tabulation Model Implementation Guide: Human Clinical Trials (Version 3.3 Final) © 2018 Clinical Data Interchange Standards Consortium, Inc. All rights reserved Page 15 2018-11-20 f. Apply the two-character domain code to the appropriate variables in the domain. Replace all variable prefixes (shown in the models as two hyphens \"--\") with the domain code. g. Set the order of variables consistent with the order defined in the SDTM for the general observation class. h. Adjust the labels of the variables only as appropriate to properly convey the meaning in the context of the data being submitted in the newly created domain. Use title case for all labels (title case means to capitalize the first letter of every word except for articles, prepositions, and conjunctions). i. Ensure that appropriate standard variables are being properly applied by comparing their use in the custom domain to their use in standard domains. j. Describe the dataset within the Define-XML document. \n[page 423 | score 0.763] ces to new Section 9. 2.5 The SDTM Standard Domain Models Added information on domain versions. Updated advice on inclusion of permissible variables. 2.6 Creating a New Domain Removed list of domains, as it was redundant. 2.7 SDTM Variables Not Allowed in SDTMIG Updated to include new variables in SDTM which would not be used in human clinical trials, or should be used with caution. 3.1 Standard Metadata for Dataset Contents and Attributes Removed information available in the Define-XML Specification. 3.2 Using the CDISC Domain Models in Regulatory Submissions — Dataset Metadata Revised content related to the Define-XML Specification. 3.2.1 Dataset-Level Metadata Updated to include all domains. 3.2.2 Conformance Removed variable labels from conformance criteria. 4 Assumptions for Domain Models Revised section numbering to remove the unnecessary second level numbering \".1\" which occurred in all sub-sections. For instance, what was Section 4.1.2.3 is now Section 4.2.3. 4.1.3.1 EPOCH Vari\n[page 135 | score 0.762]  that are assessed as efficacy endpoints). The events included in the AE dataset should be consistent with the protocol requirements. Adverse events may be captured either as free text or via a pre-specified list of terms. 2. Adverse Event Description and Coding a. AETERM captures the verbatim term collected for the event. It is the topic variable for the AE dataset. AETERM is a required variable and must have a value. b. AEMODIFY is a permissible variable and should be included if the sponsor's procedure permits modification of a verbatim term for coding. The modified term is listed in AEMODIFY. The variable should be populated as per the sponsor's procedures. c. AEDECOD is the preferred term derived by the sponsor from the coding dictionary. It is a required variable and must have a value. It is expected that the reported term (AETERM) will be coded using a standard dictionary such as MedDRA. The sponsor is expected to provide the dictionary name and version used to map the terms uti\n[page 14 | score 0.759] Domain, below). a. Select and include the required identifier variables (e.g., STUDYID, DOMAIN, USUBJID, --SEQ) and any permissible Identifier variables from the SDTM. b. Include the topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM. c. Select and include the relevant qualifier variables from the identified general observation class in the SDTM. Variables belonging to other general observation classes must not be added. d. Select and include the applicable timing variables in the SDTM. e. Determine the domain code, one that is not a domain code in the CDISC Controlled Terminology codelist \"SDTM Domain Abbreviations\" available at http://www.cancer.gov/research/resources/terminology/cdisc . If it desired to have this domain code as part of CDISC controlled terminology, then submit a request to https://ncitermform.nci.nih.gov/ncitermform/?version=cdisc. The sponsor-selected, two-character domain code should be used consistently througho"
+  },
+  "step3_propose_column_mapping": {
+    "success": false,
+    "error": "未完成前置步骤"
+  },
+  "step4_transform_to_sdtm": {
+    "success": true,
+    "output_file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\data\\output\\SDTM_AE.xlsx",
+    "domain": "AE"
+  },
+  "step5_validate_sdtm": {
+    "success": true,
+    "record_count": 757,
+    "column_count": 28,
+    "quality_summary": {
+      "error": 0,
+      "warning": 0,
+      "info": 5,
+      "issues": [
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AESTDTC",
+          "count": 18,
+          "percentage": 2.38,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AEENDTC",
+          "count": 213,
+          "percentage": 28.14,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AESTDY",
+          "count": 18,
+          "percentage": 2.38,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AEENDY",
+          "count": 213,
+          "percentage": 28.14,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "minor_missing_in_expected_vars",
+          "vars": [
+            "AEDECOD (0.53%)",
+            "AELLT (0.53%)",
+            "AELLTCD (0.53%)",
+            "AEPTCD (0.53%)",
+            "AEHLT (0.53%)",
+            "AEHLTCD (0.53%)",
+            "AEHLGT (0.53%)",
+            "AEHLGTCD (0.53%)",
+            "AEBODSYS (0.53%)",
+            "AEBDSYCD (0.53%)",
+            "AESOC (0.53%)",
+            "AESOCCD (0.53%)"
+          ],
+          "count": 12,
+          "severity": "info",
+          "message": "Minor missing rates (<1.0%) in 12 expected variables"
+        }
+      ]
+    },
+    "report_file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\data\\output\\report_AE.json"
+  }
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SDTM 转换器</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; }
+      .container { max-width: 800px; margin: auto; }
+      input, select, button { padding: 8px; margin: 6px 0; width: 100%; }
+      pre { background: #f6f8fa; padding: 12px; overflow: auto; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>SDTM 转换器</h1>
+      <p>上传或指定源文件（放在 data/raw/），选择域，然后点击转换。</p>
+
+      <label>上传文件（可选）</label>
+      <input id="file" type="file" />
+
+      <label>或填写源文件名（相对于 data/raw/）</label>
+      <input id="source_file" type="text" placeholder="CH3_ae.xlsx" />
+
+      <label>域（domain）</label>
+      <select id="domain">
+        <option value="AE">AE</option>
+        <option value="CM">CM</option>
+        <option value="LB">LB</option>
+        <option value="VS">VS</option>
+        <option value="DM">DM</option>
+      </select>
+
+      <button id="convert">开始转换</button>
+
+      <h3>结果</h3>
+      <div id="result"></div>
+
+    </div>
+
+    <script>
+      document.getElementById('convert').addEventListener('click', async function(){
+        const fileInput = document.getElementById('file')
+        const sourceFile = document.getElementById('source_file').value
+        const domain = document.getElementById('domain').value
+
+        const form = new FormData()
+        if (fileInput.files.length > 0) form.append('file', fileInput.files[0])
+        form.append('source_file', sourceFile)
+        form.append('domain', domain)
+
+        const resEl = document.getElementById('result')
+        resEl.textContent = '正在转换...'
+
+        try{
+          const resp = await fetch('/convert', { method: 'POST', body: form })
+          const data = await resp.json()
+          if (data.ok) {
+            resEl.innerHTML = `<p>转换成功</p><pre>${JSON.stringify(data, null, 2)}</pre>`
+          } else {
+            resEl.innerHTML = `<p>转换失败</p><pre>${JSON.stringify(data, null, 2)}</pre>`
+          }
+        }catch(err){
+          resEl.textContent = '请求出错: ' + err
+        }
+      })
+    </script>
+  </body>
+</html>

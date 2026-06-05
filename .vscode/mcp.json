@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "sdtm-multi-domain": {
+      "command": "node",
+      "args": [
+        "${workspaceFolder}/mcp/src/server.js"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHON": "${workspaceFolder}/venv/Scripts/python.exe",
+        "NODE_OPTIONS": "--experimental-require-module"
+      }
+    }
+  }
+}

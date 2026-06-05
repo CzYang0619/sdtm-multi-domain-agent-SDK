@@ -1,0 +1,79 @@
+{
+  "domain": "AE",
+  "timestamp": "2026-05-15T10:47:16.393187",
+  "shape": [
+    757,
+    28
+  ],
+  "issues": [
+    {
+      "type": "high_missing_in_expected_var",
+      "var": "AESTDTC",
+      "count": 18,
+      "percentage": 2.38,
+      "threshold": {
+        "warning": 30.0,
+        "error": 50.0
+      },
+      "severity": "info"
+    },
+    {
+      "type": "high_missing_in_expected_var",
+      "var": "AEENDTC",
+      "count": 213,
+      "percentage": 28.14,
+      "threshold": {
+        "warning": 30.0,
+        "error": 50.0
+      },
+      "severity": "info"
+    },
+    {
+      "type": "high_missing_in_expected_var",
+      "var": "AESTDY",
+      "count": 18,
+      "percentage": 2.38,
+      "threshold": {
+        "warning": 30.0,
+        "error": 50.0
+      },
+      "severity": "info"
+    },
+    {
+      "type": "high_missing_in_expected_var",
+      "var": "AEENDY",
+      "count": 213,
+      "percentage": 28.14,
+      "threshold": {
+        "warning": 30.0,
+        "error": 50.0
+      },
+      "severity": "info"
+    },
+    {
+      "type": "minor_missing_in_expected_vars",
+      "vars": [
+        "AEDECOD (0.53%)",
+        "AELLT (0.53%)",
+        "AELLTCD (0.53%)",
+        "AEPTCD (0.53%)",
+        "AEHLT (0.53%)",
+        "AEHLTCD (0.53%)",
+        "AEHLGT (0.53%)",
+        "AEHLGTCD (0.53%)",
+        "AEBODSYS (0.53%)",
+        "AEBDSYCD (0.53%)",
+        "AESOC (0.53%)",
+        "AESOCCD (0.53%)"
+      ],
+      "count": 12,
+      "severity": "info",
+      "message": "Minor missing rates (<1.0%) in 12 expected variables"
+    }
+  ],
+  "summary": {
+    "error": 0,
+    "warning": 0,
+    "info": 5
+  }
+}

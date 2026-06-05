@@ -1,0 +1,16 @@
+[TRANSFORM] 日期标准化: AESTDTC → AESTDTC
+[TRANSFORM] 日期标准化: AEENDTC → AEENDTC
+[TRANSFORM] 等级提取: AETOXGR → AETOXGR
+[CODING] 应用 MEDDRA 字典编码（列: AETERM）...
+[PASS] MEDDRA/AELLT 编码: 753/757 (99.5%) 记录成功编码
+{
+  "success": true,
+  "domain": "AE",
+  "output_file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\SDTM_AE.xlsx",
+  "shape": [
+    757,
+    28
+  ],
+  "standardization_issues": [],
+  "transformation_issues": []
+}

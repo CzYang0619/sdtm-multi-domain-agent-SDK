@@ -1,0 +1,343 @@
+{
+  "success": true,
+  "original_records": 799,
+  "filtered_records": 757,
+  "shape": [
+    757,
+    55
+  ],
+  "columns": [
+    "projectid",
+    "project",
+    "studyid",
+    "environmentName",
+    "subjectId",
+    "StudySiteId",
+    "siteid",
+    "SiteNumber",
+    "SiteGroup",
+    "instanceId",
+    "InstanceName",
+    "InstanceRepeatNumber",
+    "folderid",
+    "Folder",
+    "FolderName",
+    "FolderSeq",
+    "TargetDays",
+    "DataPageId",
+    "DataPageName",
+    "PageRepeatNumber",
+    "RecordDate",
+    "RecordId",
+    "RecordPosition",
+    "MinCreated",
+    "MaxUpdated",
+    "SaveTS",
+    "StudyEnvSiteNumber",
+    "AEYN",
+    "AEYN_STD",
+    "AETERM",
+    "AESTDAT",
+    "AETPT",
+    "AETPT_STD",
+    "AEENDAT",
+    "AECTCAE",
+    "AECTCAE_STD",
+    "AEDAT",
+    "AEREL",
+    "AEREL_STD",
+    "AEACN",
+    "AEACN_STD",
+    "AEOUT",
+    "AEOUT_STD",
+    "AESER",
+    "AESER_STD",
+    "SAEDAT",
+    "SAE01",
+    "SAE02",
+    "SAE03",
+    "SAE04",
+    "SAE05",
+    "SAE06",
+    "H_NOW",
+    "Site",
+    "Subject"
+  ],
+  "dtypes": {
+    "projectid": "int64",
+    "project": "str",
+    "studyid": "int64",
+    "environmentName": "str",
+    "subjectId": "int64",
+    "StudySiteId": "int64",
+    "siteid": "int64",
+    "SiteNumber": "str",
+    "SiteGroup": "str",
+    "instanceId": "int64",
+    "InstanceName": "str",
+    "InstanceRepeatNumber": "int64",
+    "folderid": "int64",
+    "Folder": "str",
+    "FolderName": "str",
+    "FolderSeq": "int64",
+    "TargetDays": "float64",
+    "DataPageId": "int64",
+    "DataPageName": "str",
+    "PageRepeatNumber": "int64",
+    "RecordDate": "float64",
+    "RecordId": "int64",
+    "RecordPosition": "int64",
+    "MinCreated": "datetime64[us]",
+    "MaxUpdated": "datetime64[us]",
+    "SaveTS": "datetime64[us]",
+    "StudyEnvSiteNumber": "int64",
+    "AEYN": "str",
+    "AEYN_STD": "int64",
+    "AETERM": "str",
+    "AESTDAT": "str",
+    "AETPT": "str",
+    "AETPT_STD": "float64",
+    "AEENDAT": "str",
+    "AECTCAE": "str",
+    "AECTCAE_STD": "float64",
+    "AEDAT": "str",
+    "AEREL": "str",
+    "AEREL_STD": "float64",
+    "AEACN": "str",
+    "AEACN_STD": "float64",
+    "AEOUT": "str",
+    "AEOUT_STD": "float64",
+    "AESER": "str",
+    "AESER_STD": "float64",
+    "SAEDAT": "str",
+    "SAE01": "int64",
+    "SAE02": "int64",
+    "SAE03": "int64",
+    "SAE04": "int64",
+    "SAE05": "int64",
+    "SAE06": "int64",
+    "H_NOW": "str",
+    "Site": "str",
+    "Subject": "str"
+  },
+  "missing_rate": {
+    "projectid": 0.0,
+    "project": 0.0,
+    "studyid": 0.0,
+    "environmentName": 0.0,
+    "subjectId": 0.0,
+    "StudySiteId": 0.0,
+    "siteid": 0.0,
+    "SiteNumber": 0.0,
+    "SiteGroup": 0.0,
+    "instanceId": 0.0,
+    "InstanceName": 0.0,
+    "InstanceRepeatNumber": 0.0,
+    "folderid": 0.0,
+    "Folder": 0.0,
+    "FolderName": 0.0,
+    "FolderSeq": 0.0,
+    "TargetDays": 1.0,
+    "DataPageId": 0.0,
+    "DataPageName": 0.0,
+    "PageRepeatNumber": 0.0,
+    "RecordDate": 1.0,
+    "RecordId": 0.0,
+    "RecordPosition": 0.0,
+    "MinCreated": 0.0,
+    "MaxUpdated": 0.0,
+    "SaveTS": 0.0,
+    "StudyEnvSiteNumber": 0.0,
+    "AEYN": 0.0,
+    "AEYN_STD": 0.0,
+    "AETERM": 0.0,
+    "AESTDAT": 0.0,
+    "AETPT": 0.9973579920739762,
+    "AETPT_STD": 0.9973579920739762,
+    "AEENDAT": 0.26420079260237783,
+    "AECTCAE": 0.0,
+    "AECTCAE_STD": 0.0,
+    "AEDAT": 0.11624834874504623,
+    "AEREL": 0.0,
+    "AEREL_STD": 0.0,
+    "AEACN": 0.0,
+    "AEACN_STD": 0.0,
+    "AEOUT": 0.001321003963011889,
+    "AEOUT_STD": 0.001321003963011889,
+    "AESER": 0.0,
+    "AESER_STD": 0.0,
+    "SAEDAT": 0.9564068692206077,
+    "SAE01": 0.0,
+    "SAE02": 0.0,
+    "SAE03": 0.0,
+    "SAE04": 0.0,
+    "SAE05": 0.0,
+    "SAE06": 0.0,
+    "H_NOW": 0.0,
+    "Site": 0.0,
+    "Subject": 0.0
+  },
+  "sample": {
+    "projectid": [
+      633
+    ],
+    "project": [
+      "2020-689-00CH3"
+    ],
+    "studyid": [
+      14
+    ],
+    "environmentName": [
+      "Prod"
+    ],
+    "subjectId": [
+      1751
+    ],
+    "StudySiteId": [
+      49
+    ],
+    "siteid": [
+      39
+    ],
+    "SiteNumber": [
+      "2020-689-00CH3-03"
+    ],
+    "SiteGroup": [
+      "World"
+    ],
+    "instanceId": [
+      26992
+    ],
+    "InstanceName": [
+      "Common Page"
+    ],
+    "InstanceRepeatNumber": [
+      0
+    ],
+    "folderid": [
+      4120
+    ],
+    "Folder": [
+      "COM"
+    ],
+    "FolderName": [
+      "Common Page"
+    ],
+    "FolderSeq": [
+      42
+    ],
+    "TargetDays": [],
+    "DataPageId": [
+      206887
+    ],
+    "DataPageName": [
+      "Adverse Event"
+    ],
+    "PageRepeatNumber": [
+      0
+    ],
+    "RecordDate": [],
+    "RecordId": [
+      337033
+    ],
+    "RecordPosition": [
+      1
+    ],
+    "MinCreated": [
+      "2021-09-30T11:31:00.673000"
+    ],
+    "MaxUpdated": [
+      "2022-07-25T03:15:38.160000"
+    ],
+    "SaveTS": [
+      "2022-07-25T04:01:14.063000"
+    ],
+    "StudyEnvSiteNumber": [
+      3
+    ],
+    "AEYN": [
+      "Yes"
+    ],
+    "AEYN_STD": [
+      1
+    ],
+    "AETERM": [
+      "Alanine aminotransferase  increased"
+    ],
+    "AESTDAT": [
+      "19/AUG/2021"
+    ],
+    "AETPT": [
+      "Post-dose"
+    ],
+    "AETPT_STD": [
+      2.0
+    ],
+    "AEENDAT": [
+      "1/SEP/2021"
+    ],
+    "AECTCAE": [
+      "Grade 1"
+    ],
+    "AECTCAE_STD": [
+      1.0
+    ],
+    "AEDAT": [
+      "19/AUG/2021"
+    ],
+    "AEREL": [
+      "Reasonable Possible Correlation"
+    ],
+    "AEREL_STD": [
+      2.0
+    ],
+    "AEACN": [
+      "No Changed"
+    ],
+    "AEACN_STD": [
+      1.0
+    ],
+    "AEOUT": [
+      "Recovered/Resolved"
+    ],
+    "AEOUT_STD": [
+      1.0
+    ],
+    "AESER": [
+      "No"
+    ],
+    "AESER_STD": [
+      2.0
+    ],
+    "SAEDAT": [
+      "03/Sep/2021"
+    ],
+    "SAE01": [
+      0
+    ],
+    "SAE02": [
+      0
+    ],
+    "SAE03": [
+      0
+    ],
+    "SAE04": [
+      0
+    ],
+    "SAE05": [
+      0
+    ],
+    "SAE06": [
+      0
+    ],
+    "H_NOW": [
+      "25 JUL 2022 10:52:05"
+    ],
+    "Site": [
+      "SITE_014"
+    ],
+    "Subject": [
+      "SUBJ_0051"
+    ]
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "source_original": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\nextjs\\data\\uploads\\1778749398802-0ph4xt.xlsx",
+  "source_for_transform": "1778749398802-0ph4xt.xlsx",
+  "raw_copy": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\data\\raw\\1778749398802-0ph4xt.xlsx",
+  "step1_read_source_data": {
+    "success": true,
+    "file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\nextjs\\data\\uploads\\1778749398802-0ph4xt.xlsx",
+    "records": 182,
+    "columns": [
+      "projectid",
+      "project",
+      "studyid",
+      "environmentName",
+      "subjectId",
+      "StudySiteId",
+      "Subject",
+      "siteid",
+      "Site",
+      "SiteNumber",
+      "SiteGroup",
+      "instanceId",
+      "InstanceName",
+      "InstanceRepeatNumber",
+      "folderid",
+      "Folder",
+      "FolderName",
+      "FolderSeq",
+      "TargetDays",
+      "DataPageId",
+      "DataPageName",
+      "PageRepeatNumber",
+      "RecordDate",
+      "RecordId",
+      "RecordPosition",
+      "MinCreated",
+      "MaxUpdated",
+      "SaveTS",
+      "StudyEnvSiteNumber",
+      "AEYN",
+      "AEYN_STD",
+      "AETERM",
+      "AECHAYN",
+      "AECHAYN_STD",
+      "AECHA",
+      "AECHA_STD",
+      "AEONGO2",
+      "AEONGO2_STD",
+      "CTCAE",
+      "CTCAE_STD",
+      "AEACN1",
+      "AEACN1_STD",
+      "AEACN3",
+      "AEACN3_STD",
+      "AEREL",
+      "AEREL_STD",
+      "AEREL2",
+      "AEREL2_STD",
+      "AEDLTYN",
+      "AEDLTYN_STD",
+      "NOACTION",
+      "AEACNCM",
+      "NONDRUG",
+      "OTHER",
+      "OTHERSPE",
+      "AEIMYN",
+      "AEIMYN_STD",
+      "AESER",
+      "AESER_STD",
+      "SAEDTH",
+      "SAELIFE",
+      "HOSPITAL",
+      "SIGNIFI",
+      "ANOMALY",
+      "SAEOTH",
+      "AEOUT",
+      "AEOUT_STD",
+      "AESTDAT",
+      "AEENDAT"
+    ],
+    "shape": [
+      182,
+      69
+    ]
+  },
+  "step2_retrieve_sdtm_rules": {
+    "success": true,
+    "query": "[AE] AE domain requirements and mandatory variables with controlled terminology",
+    "chunks_count": 5,
+    "formatted": "[page 135 | score 0.759]  that are assessed as efficacy endpoints). The events included in the AE dataset should be consistent with the protocol requirements. Adverse events may be captured either as free text or via a pre-specified list of terms. 2. Adverse Event Description and Coding a. AETERM captures the verbatim term collected for the event. It is the topic variable for the AE dataset. AETERM is a required variable and must have a value. b. AEMODIFY is a permissible variable and should be included if the sponsor's procedure permits modification of a verbatim term for coding. The modified term is listed in AEMODIFY. The variable should be populated as per the sponsor's procedures. c. AEDECOD is the preferred term derived by the sponsor from the coding dictionary. It is a required variable and must have a value. It is expected that the reported term (AETERM) will be coded using a standard dictionary such as MedDRA. The sponsor is expected to provide the dictionary name and version used to map the terms uti\n[page 3 | score 0.755] .. 37 4.3.2 Controlled Terminology Text Case ........................................................................... 37 4.3.3 Controlled Terminology Values ................................................................................ 37 4.3.4 Use of Controlled Terminology and Arbitrary Number Codes ................................. 38 4.3.5 Storing Controlled Terminology for Synonym Qualifier Variables ......................... 38 4.3.6 Storing Topic Variables for General Domain Models .............................................. 38 4.3.7 Use of \"Yes\" and \"No\" Values .................................................................................. 38 4.4 ACTUAL AND RELATIVE TIME ASSUMPTIONS ......................................................................... 39 4.4.1 Formats for Date/Time Variables .............................................................................. 39 4.4.2 Date/Time Precision ...................................................................\n[page 9 | score 0.749] resented as hyperlinked text. The domain code in the row for the DOMAIN variable is the most common kind of controlled term represented in domain specifications. o Codelist o An asterisk * indicates that the variable may be subject to controlled terminology.  The controlled terminology might be of a type that would inherently be sponsor defined.\n[page 423 | score 0.738] e o Hyperlinking references to sections of the document o Referring to \"Define-XML Document\" instead of \"define.xml\" or \"define.xml file\" • Example content has been highlighted using a gray vertical line on the left side of the text. • Many small changes to wording, intended to clarify meaning, were made, but are not detailed here. • Updated assumptions for most domains: o Domain definitions, where present in an assumption, were removed to eliminate red undancy. o Revised assumptions describing variables \"generally not used\" in a domain to clarify the variables that can be added to those in the domain specification, and that those listed as \"generally not used\" are not prohibited. • Terms in examples were updated to use current controlled terminology, where applicable. • For some variables in domain specification tables, more than one codelist is referenced. Section number Section Change 1.1 Purpose Removed outdated language. 1.2 Organization of this Document Added new Section 9 for St\n[page 15 | score 0.734] CDISC Study Data Tabulation Model Implementation Guide: Human Clinical Trials (Version 3.3 Final) © 2018 Clinical Data Interchange Standards Consortium, Inc. All rights reserved Page 15 2018-11-20 f. Apply the two-character domain code to the appropriate variables in the domain. Replace all variable prefixes (shown in the models as two hyphens \"--\") with the domain code. g. Set the order of variables consistent with the order defined in the SDTM for the general observation class. h. Adjust the labels of the variables only as appropriate to properly convey the meaning in the context of the data being submitted in the newly created domain. Use title case for all labels (title case means to capitalize the first letter of every word except for articles, prepositions, and conjunctions). i. Ensure that appropriate standard variables are being properly applied by comparing their use in the custom domain to their use in standard domains. j. Describe the dataset within the Define-XML document. "
+  },
+  "step3_propose_column_mapping": {
+    "success": false,
+    "error": "未完成前置步骤"
+  },
+  "step3_mapping_detail_fallback": {
+    "success": true,
+    "domain": "AE",
+    "mapping_ready": true
+  },
+  "step4_transform_to_sdtm": {
+    "success": true,
+    "output_file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\data\\output\\SDTM_AE.xlsx",
+    "domain": "AE"
+  },
+  "step5_validate_sdtm": {
+    "success": true,
+    "record_count": 168,
+    "column_count": 22,
+    "quality_summary": {
+      "error": 3,
+      "warning": 1,
+      "info": 5,
+      "issues": [
+        {
+          "type": "missing_values_in_required_var",
+          "var": "AETERM",
+          "count": 1,
+          "percentage": 0.6,
+          "severity": "error"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AEBDSYCD",
+          "count": 138,
+          "percentage": 82.14,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "error"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AESOCCD",
+          "count": 138,
+          "percentage": 82.14,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "error"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AESTDTC",
+          "count": 2,
+          "percentage": 1.19,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AEENDTC",
+          "count": 49,
+          "percentage": 29.17,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AESTDY",
+          "count": 2,
+          "percentage": 1.19,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "high_missing_in_expected_var",
+          "var": "AEENDY",
+          "count": 49,
+          "percentage": 29.17,
+          "threshold": {
+            "warning": 30.0,
+            "error": 50.0
+          },
+          "severity": "info"
+        },
+        {
+          "type": "minor_missing_in_expected_vars",
+          "vars": [
+            "AEHLTCD (0.60%)",
+            "AEHLGTCD (0.60%)",
+            "AESER (0.60%)",
+            "AEACN (0.60%)",
+            "AEREL (0.60%)",
+            "AETOXGR (0.60%)"
+          ],
+          "count": 6,
+          "severity": "info",
+          "message": "Minor missing rates (<1.0%) in 6 expected variables"
+        },
+        {
+          "type": "seq_not_sequential",
+          "var": "AESEQ",
+          "severity": "warning",
+          "message": "AESEQ not sequential within USUBJID or has gaps"
+        }
+      ]
+    },
+    "report_file": "C:\\Users\\ZhiyangCao\\Desktop\\work\\SDK_test\\sdtm-multi-domain-agent\\data\\output\\report_AE.json"
+  }
+}

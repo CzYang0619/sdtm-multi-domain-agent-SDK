@@ -1,0 +1,81 @@
+[MAPPING] 源列别名匹配: AESTDAT → AESTDTC
+[MAPPING] 源列别名匹配: AEENDAT → AEENDTC
+[MAPPING] 源列别名匹配: AECTCAE → AETOXGR
+{
+  "success": true,
+  "domain": "AE",
+  "proposed_mapping": {
+    "AESTDAT": "AESTDTC",
+    "AEENDAT": "AEENDTC",
+    "AECTCAE": "AETOXGR",
+    "AETERM": "AETERM",
+    "AEREL": "AEREL",
+    "AEACN": "AEACN",
+    "AEOUT": "AEOUT",
+    "AESER": "AESER",
+    "project": "STUDYID",
+    "Subject": "SUBJID",
+    "_derived_usubjid": "USUBJID"
+  },
+  "issues": [
+    {
+      "type": "missing_required_var",
+      "var": "DOMAIN",
+      "severity": "error",
+      "message": "Required variable 'DOMAIN' not found in source. Please specify source column or provide derivation rule."
+    },
+    {
+      "type": "missing_required_var",
+      "var": "AESEQ",
+      "severity": "error",
+      "message": "Required variable 'AESEQ' not found in source. Please specify source column or provide derivation rule."
+    }
+  ],
+  "unmapped_columns": [
+    "projectid",
+    "studyid",
+    "environmentName",
+    "subjectId",
+    "StudySiteId",
+    "siteid",
+    "SiteNumber",
+    "SiteGroup",
+    "instanceId",
+    "InstanceName",
+    "InstanceRepeatNumber",
+    "folderid",
+    "Folder",
+    "FolderName",
+    "FolderSeq",
+    "TargetDays",
+    "DataPageId",
+    "DataPageName",
+    "PageRepeatNumber",
+    "RecordDate",
+    "RecordId",
+    "RecordPosition",
+    "MinCreated",
+    "MaxUpdated",
+    "SaveTS",
+    "StudyEnvSiteNumber",
+    "AEYN",
+    "AEYN_STD",
+    "AETPT",
+    "AETPT_STD",
+    "AECTCAE_STD",
+    "AEDAT",
+    "AEREL_STD",
+    "AEACN_STD",
+    "AEOUT_STD",
+    "AESER_STD",
+    "SAEDAT",
+    "SAE01",
+    "SAE02",
+    "SAE03",
+    "SAE04",
+    "SAE05",
+    "SAE06",
+    "H_NOW",
+    "Site"
+  ]
+}

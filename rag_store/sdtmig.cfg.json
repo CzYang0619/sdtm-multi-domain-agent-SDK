@@ -1,0 +1,7 @@
+{
+  "pdf": "C:\\Users\\ZhiyangCao\\Desktop\\work\\to_SDTM_agent\\SDTMIG_v3.3_FINAL.pdf",
+  "model": "BAAI/bge-small-en-v1.5",
+  "chunk_size": 1000,
+  "chunk_overlap": 150,
+  "count": 1739
+}

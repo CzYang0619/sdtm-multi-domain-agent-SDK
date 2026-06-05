@@ -1,0 +1,15 @@
+{
+  "AESTDAT": "AESTDTC",
+  "AEENDAT": "AEENDTC",
+  "CTCAE": "AETOXGR",
+  "RecordPosition": "AESEQ",
+  "_fixed_domain": "DOMAIN",
+  "AETERM": "AETERM",
+  "AEREL": "AEREL",
+  "AESER": "AESER",
+  "AEOUT": "AEOUT",
+  "AEACN1": "AEACN",
+  "project": "STUDYID",
+  "Subject": "SUBJID",
+  "_derived_usubjid": "USUBJID"
+}

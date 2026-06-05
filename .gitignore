@@ -1,0 +1,10 @@
+Plaintext
+# 1. 忽略第三方依赖（你已经写对的）
+node_modules/
+
+# 2. 忽略 Next.js 编译生成的文件夹（这里面文件非常多且大，绝对不要传）
+.next/
+out/
+
+# 3. 忽略 Python 虚拟环境
+venv/

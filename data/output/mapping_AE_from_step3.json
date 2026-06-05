@@ -1,0 +1,13 @@
+{
+  "AESTDAT": "AESTDTC",
+  "AEENDAT": "AEENDTC",
+  "AECTCAE": "AETOXGR",
+  "AETERM": "AETERM",
+  "AEREL": "AEREL",
+  "AEACN": "AEACN",
+  "AEOUT": "AEOUT",
+  "AESER": "AESER",
+  "project": "STUDYID",
+  "Subject": "SUBJID",
+  "_derived_usubjid": "USUBJID"
+}
