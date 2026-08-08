@@ -549,214 +549,148 @@ class SDTMTransformer:
     
     def propose_mapping(self, source_schema: Dict[str, Any], rag_context: str = "") -> Dict[str, str]:
         """
-        提议列映射方案（元数据驱动，支持泛化）
-        返回 {源列: SDTM目标列}
-        
-        策略：
-        1. 源列别名映射（如 AESTDAT → AESTDTC）【新增】
-        2. 精确名称匹配（源列名大写后即为SDTM列名）
-        3. 根据元数据中的通用模式匹配
-        4. 特殊处理USUBJID（派生规则）
-        5. 特殊处理STUDYID（使用 project 字段）
-        6. 特殊处理SUBJID（从 Subject 提取）
-        7. 检查并记录缺失的必需列
+        提议列映射方案 —— 三层递进列映射引擎
+          第一层 源名匹配：源列名 完全等于 SDTM 变量名（最严格）
+          第二层 别名匹配：源列名命中预置别名表 source_column_aliases
+          第三层 语义匹配：LLM 结合 RAG 规范生成规则 + 启发式评分兜底（最宽松，阈值拦截）
         """
-        mapping = {}
+        mapping: Dict[str, str] = {}
         df_cols_lower = {col.lower(): col for col in source_schema["columns"]}
-        processed_sdtm_vars = set()  # 跟踪已映射的 SDTM 变量
-        
-        # 【新增】策略 0: 源列别名映射
-        # 允许原始列名（如 AESTDAT）映射到 SDTM 列名（如 AESTDTC）
+        mapped_src = set()            # 已映射的源列
+        mapped_sdtm = set()           # 已映射的 SDTM 变量
+        all_sdtm_vars = (self.metadata.get("required_vars", [])
+                         + self.metadata.get("expected_vars", []))
+    
+        # ── 第一层：源名精确匹配 ──
+        for col in source_schema["columns"]:
+            col_upper = col.upper()
+            if col_upper in ["USUBJID", "STUDYID", "SUBJID"]:   # 交给特殊派生
+                continue
+            if col_upper in all_sdtm_vars and col_upper not in mapped_sdtm:
+                mapping[col] = col_upper
+                mapped_src.add(col); mapped_sdtm.add(col_upper)
+                print(f"[MAPPING] 第一层·源名匹配: {col} → {col_upper}")
+    
+        # ── 第二层：别名匹配 ──
         if "source_column_aliases" in self.metadata:
             for sdtm_col, source_aliases in self.metadata["source_column_aliases"].items():
+                if sdtm_col in mapped_sdtm:
+                    continue
                 for alias in source_aliases:
-                    # 不区分大小写的精确匹配
                     if alias.lower() in df_cols_lower:
                         raw_col = df_cols_lower[alias.lower()]
+                        if raw_col in mapped_src:
+                            continue
                         mapping[raw_col] = sdtm_col
-                        processed_sdtm_vars.add(sdtm_col)
-                        print(f"[MAPPING] 源列别名匹配: {raw_col} → {sdtm_col}")
-                        break  # 找到后停止查找这个 SDTM 列的其他别名
-        
-        # 策略 1: 精确匹配（源列名大写后就是SDTM列名）
-        all_sdtm_vars = self.metadata.get("required_vars", []) + self.metadata.get("expected_vars", [])
-        for col in source_schema["columns"]:
-            if col in mapping:  # 已在别名处理中映射过
-                continue
-            col_upper = col.upper()
-            if col_upper in all_sdtm_vars and col_upper not in ["USUBJID", "STUDYID", "SUBJID"]:
-                if col_upper not in processed_sdtm_vars:
-                    mapping[col] = col_upper
-                    processed_sdtm_vars.add(col_upper)
-        
-        # 策略 2: 通用启发式模式匹配（元数据驱动）
+                        mapped_src.add(raw_col); mapped_sdtm.add(sdtm_col)
+                        print(f"[MAPPING] 第二层·别名匹配: {raw_col} → {sdtm_col}")
+                        break
+    
+        # ── 第三层：语义匹配 ──
+        # 3a. LLM + RAG 规范增强
+        if rag_context and os.getenv("TONGYI_API_KEY"):
+            try:
+                from core.llm_mapping import llm_generate_mapping
+                llm_map = llm_generate_mapping(source_schema, rag_context, self.metadata)
+                for raw_col, sdtm_col in llm_map.items():
+                    key = raw_col.lower()
+                    if (key in df_cols_lower and df_cols_lower[key] not in mapped_src
+                            and sdtm_col in all_sdtm_vars and sdtm_col not in mapped_sdtm):
+                        mapping[df_cols_lower[key]] = sdtm_col
+                        mapped_src.add(df_cols_lower[key]); mapped_sdtm.add(sdtm_col)
+                        print(f"[MAPPING] 第三层·LLM+规范: {raw_col} → {sdtm_col}")
+            except Exception as e:
+                self.issues.append({"type": "llm_mapping_failed",
+                                    "severity": "warning", "message": str(e)[:100]})
+    
+        # 3b. 启发式评分兜底（≥70 分才采纳）
         source_cols_lower = {col.lower(): col for col in source_schema["columns"]}
-        
-        # 按照元数据定义的期望列，尝试模糊匹配（改进的启发式算法）
         for expected_var in self.metadata.get("expected_vars", []):
-            if expected_var in mapping.values():
-                continue  # 已映射
-            
-            # 将SDTM变量名分解为可能的关键词
+            if expected_var in mapped_sdtm:
+                continue
             tokens = self._tokenize_sdtm_var(expected_var)
-            
-            # 在源列中寻找最佳匹配
-            best_match = None
-            best_score = 0
-            
+            best_match, best_score = None, 0
             for src_col_lower, src_col in source_cols_lower.items():
-                if src_col in mapping:
-                    continue  # 已映射
-                
-                # 改进的匹配评分算法：
-                # 1. 完全匹配最高分
-                if src_col_lower == expected_var.lower():
-                    best_match = src_col
-                    best_score = 100
-                    break
-                
-                # 2. 包含匹配（整个SDTM变量名在源列中）
-                if expected_var.lower() in src_col_lower:
-                    match_score = 90 + len(expected_var) / len(src_col_lower) * 10
-                    if match_score > best_score:
-                        best_match = src_col
-                        best_score = match_score
+                if src_col in mapped_src:
                     continue
-                
-                # 3. 关键词匹配（必须匹配所有关键词，不允许缺失）
-                match_count = sum(1 for token in tokens if token in src_col_lower)
-                if match_count == len(tokens):  # 严格：必须全部匹配
-                    match_score = 70 + (len(tokens) / max(1, len(src_col_lower))) * 10
-                    if match_score > best_score:
-                        best_match = src_col
-                        best_score = match_score
-            
-            # 应用最佳匹配（仅当分数足够高时）
-            if best_match and best_score >= 70:  # 阈值：70分及以上
+                if src_col_lower == expected_var.lower():
+                    best_match, best_score = src_col, 100
+                    break
+                if expected_var.lower() in src_col_lower:
+                    score = 90 + len(expected_var) / len(src_col_lower) * 10
+                    if score > best_score:
+                        best_match, best_score = src_col, score
+                    continue
+                match_count = sum(1 for t in tokens if t in src_col_lower)
+                if match_count == len(tokens):
+                    score = 70 + (len(tokens) / max(1, len(src_col_lower))) * 10
+                    if score > best_score:
+                        best_match, best_score = src_col, score
+            if best_match and best_score >= 70:
                 mapping[best_match] = expected_var
-        
-        # 策略 3: 特殊处理 STUDYID（使用 project 字段）
-        if "STUDYID" not in mapping.values():
+                mapped_src.add(best_match); mapped_sdtm.add(expected_var)
+                print(f"[MAPPING] 第三层·语义评分: {best_match} → {expected_var} (score={best_score:.0f})")
+    
+        # ── 特殊派生：STUDYID / SUBJID / USUBJID ──
+        if "STUDYID" not in mapped_sdtm:
             for col in source_schema["columns"]:
                 if col.lower() in ["project", "studyid", "study_id", "study_code"]:
-                    mapping[col] = "STUDYID"
-                    break
-            
-            if "STUDYID" not in mapping.values():
-                self.issues.append({
-                    "type": "missing_required_var",
-                    "var": "STUDYID",
-                    "severity": "error",
-                    "message": "Cannot find STUDYID column. Expected 'project', 'studyid', 'study_id', or 'study_code'",
-                })
-        
-        # 策略 4: 特殊处理 SUBJID（从 Subject 提取）
-        if "SUBJID" not in mapping.values():
-            # 优先级：Subject > subjid > subject_id > ...
+                    mapping[col] = "STUDYID"; mapped_sdtm.add("STUDYID"); break
+            if "STUDYID" not in mapped_sdtm:
+                self.issues.append({"type": "missing_required_var", "var": "STUDYID",
+                                    "severity": "error",
+                                    "message": "Cannot find STUDYID column. Expected 'project'/'studyid'."})
+    
+        if "SUBJID" not in mapped_sdtm:
             subject_col = None
             for col in source_schema["columns"]:
-                col_lower = col.lower()
-                # 优先选择精确或接近的列名
-                if col == "Subject":  # 完全匹配（区分大小写）
-                    subject_col = col
-                    break
-            
-            # 如果没找到 "Subject"，再用模糊匹配
-            if not subject_col:
-                for col in source_schema["columns"]:
-                    col_lower = col.lower()
-                    if col_lower in ["subject", "subjid", "subj_id", "subjectid", "subject_id"]:
-                        subject_col = col
-                        break
-            
+                if col == "Subject" or col.lower() in ["subject", "subjid", "subj_id", "subjectid"]:
+                    subject_col = col; break
             if subject_col:
-                mapping[subject_col] = "SUBJID"
-        
-        # 策略 5: 特殊处理 USUBJID（派生规则，使用元数据配置）
-        if "USUBJID" not in mapping.values():
-            study_col = None
-            subject_col = None
-            
-            # 使用更明确的列名检测（优先精确匹配）
+                mapping[subject_col] = "SUBJID"; mapped_sdtm.add("SUBJID")
+    
+        if "USUBJID" not in mapped_sdtm:
+            study_col = subject_col = None
             for col in source_schema["columns"]:
-                if not study_col and col.lower() == "project":
+                if not study_col and col.lower() in ["project", "studyid", "study_code", "study"]:
                     study_col = col
-                    break
-            
-            # 如果 project 没找到，再用模糊匹配
-            if not study_col:
-                study_patterns = ["project", "studyid", "study_id", "study_code", "study"]
-                for col in source_schema["columns"]:
-                    col_lower = col.lower()
-                    if col_lower in study_patterns:
-                        study_col = col
-                        break
-            
-            # 同样为 subject 列优先选择 "Subject"
-            for col in source_schema["columns"]:
-                if not subject_col and col == "Subject":
+                if not subject_col and (col == "Subject"
+                        or col.lower() in ["subject", "subjid", "subj_id", "subjectid", "participant"]):
                     subject_col = col
-                    break
-            
-            # 如果 "Subject" 没找到，再用模糊匹配
-            if not subject_col:
-                subject_patterns = ["subject", "subjid", "subj_id", "subjectid", "subject_id", "participant"]
-                for col in source_schema["columns"]:
-                    col_lower = col.lower()
-                    if col_lower in subject_patterns:
-                        subject_col = col
-                        break
-            
-            # 优先级：study_col + subject_col → 派生规则
             if study_col and subject_col:
                 mapping["_derived_usubjid"] = "USUBJID"
-                
-                # 使用元数据中的派生规则配置
-                derivation_config = self.metadata.get("usubjid_derivation", {})
-                format_str = derivation_config.get("format", "{study}-{subject}")
-                subject_padding = derivation_config.get("subject_padding", 0)
-                subject_strip = derivation_config.get("subject_strip", None)
-                
-                def create_usubjid(df, study_col=study_col, subject_col=subject_col, fmt=format_str, padding=subject_padding, strip=subject_strip):
-                    # 对每一行应用转换，确保逐行处理
+                cfg = self.metadata.get("usubjid_derivation", {})
+                fmt = cfg.get("format", "{study}-{subject}")
+                padding = cfg.get("subject_padding", 0)
+                strip = cfg.get("subject_strip", None)
+                def create_usubjid(df, sc=study_col, sj=subject_col, f=fmt, p=padding, s=strip):
                     def derive_row(row):
-                        study_val = str(row[study_col]).strip()
-                        subject_val = str(row[subject_col]).strip()
-                        
-                        # 如果配置了 subject_strip，先剥离前缀（如 SUBJ_0051 → 0051）
-                        if strip:
+                        study_val = str(row[sc]).strip()
+                        subject_val = str(row[sj]).strip()
+                        if s:
                             import re
-                            subject_val = re.sub(f"^{strip}", "", subject_val)
-                        
-                        # 左补零（如果配置了）
-                        if padding > 0:
-                            subject_val = subject_val.zfill(padding)
-                        
-                        return fmt.format(study=study_val, subject=subject_val)
-                    
+                            subject_val = re.sub(f"^{s}", "", subject_val)
+                        if p > 0:
+                            subject_val = subject_val.zfill(p)
+                        return f.format(study=study_val, subject=subject_val)
                     return df.apply(derive_row, axis=1)
-                
                 self.derived_rules = {"USUBJID": create_usubjid}
             elif subject_col:
                 mapping[subject_col] = "USUBJID"
             else:
-                self.issues.append({
-                    "type": "usubjid_construction_failed",
-                    "severity": "error",
-                    "message": "Cannot construct USUBJID: missing subject identifier column",
-                })
-        
-        # 策略 6: 检查缺失的必需列
+                self.issues.append({"type": "usubjid_construction_failed",
+                                    "severity": "error",
+                                    "message": "Cannot construct USUBJID: missing subject identifier"})
+    
+        # ── 检查缺失的必需列 ──
         mapped_targets = set(mapping.values())
         for req_var in self.metadata.get("required_vars", []):
             if req_var not in mapped_targets:
-                self.issues.append({
-                    "type": "missing_required_var",
-                    "var": req_var,
-                    "severity": "error",
-                    "message": f"Required variable '{req_var}' not found in source. Please specify source column or provide derivation rule.",
-                })
-        
+                self.issues.append({"type": "missing_required_var", "var": req_var,
+                                    "severity": "error",
+                                    "message": f"Required variable '{req_var}' not found in source. "
+                                               "Please specify source column or provide derivation rule."})
+    
         self.mapping = mapping
         return mapping
     
