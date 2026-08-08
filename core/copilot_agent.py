@@ -37,7 +37,7 @@ class SDTMCopilotAgent:
 1. **识别目标域**：如果用户未明确指定，根据文件内容自动检测（文件名、列名、样本值）。
 2. **调用 read_source_data skill**：分析源数据的列名、数据类型、缺失率、样本值。
 3. **调用 retrieve_sdtm_rules skill**：查询对应域的 SDTMIG 规范要求和关键变量定义。
-4. **调用 propose_column_mapping skill**：提议源列与 SDTM 标准列的对应关系，标记缺失的必需字段。
+4. **调用 propose_column_mapping skill**：提议源列与 SDTM 标准列的对应关系，标记缺失的必需字段，映射必须参考RAG检索到的规范片段——规范中明确给出的字段定义、可映射别名与受控术语，作为字段映射的直接依据，不得凭空猜测或低置信强配。
 5. **获取用户确认**（如有歧义）：显示映射预览，请用户确认或提供派生规则。
 6. **调用 transform_to_sdtm skill**：执行转换、标准化、生成 SDTM 表。
 7. **调用 validate_sdtm skill**：进行质量检查（必需变量完整性、缺失率、序列号连续性）。
